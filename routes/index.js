@@ -1,19 +1,27 @@
 let express = require('express');
 let router = express.Router();
-
 const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser');
+
+const saltRounds = 10;
+let users = []; 
+
+router.use(bodyParser.urlencoded({ extended: false }));
+
+router.post('/signup', async function (req, res, next) {
+  const { username, password } = req.body;
+
+  const salt = await bcrypt.genSalt(saltRounds);
+  const hash = await bcrypt.hash(password, salt);
+
+  users.push({ username, password: hash });
+
+  res.redirect('/login');
+});
 
 
-router.post('/', function (req, res, next) {
-
-  let { username, password } = req.body
-
-  if (username && password) {
-    
-    
-  }
-
-  res.render('signup', { title: 'Sign up' });
+router.get('/signup', function (req, res, next) {
+  res.render('signup', { title: 'Signup' });
 });
 
 router.get('/login', function (req, res, next) {

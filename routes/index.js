@@ -59,7 +59,7 @@ router.post('/login', async function (req, res) {
   console.log(match)
 
   if (match) {
-    res.send('Login successful!');
+    return res.send(`WElCOME to ${username}!`);
   } else {
     res.send('Incorrect password.');
   }
